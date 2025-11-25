@@ -8,4 +8,4 @@ DOMAIN = "vacances_fr"
 ATTRIBUTION = "Data provided by https: // data.education.gouv.fr/"
 
 CONF_ZONE = "zone"
-FRIENDLY_PREFIX = "Vacances"
+FRIENDLY_NAME = "Vacances Scolaires"

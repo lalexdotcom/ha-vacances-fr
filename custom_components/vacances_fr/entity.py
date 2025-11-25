@@ -5,7 +5,7 @@ from __future__ import annotations
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import ATTRIBUTION, FRIENDLY_PREFIX
+from .const import ATTRIBUTION, FRIENDLY_NAME
 from .coordinator import VacancesFrDataUpdateCoordinator
 
 
@@ -25,5 +25,5 @@ class VacancesFrEntity(CoordinatorEntity[VacancesFrDataUpdateCoordinator]):
                     coordinator.config_entry.entry_id,
                 ),
             },
-            name=f"{FRIENDLY_PREFIX} - {coordinator.config_entry.data["zone"]}"
+            name=f"{FRIENDLY_NAME} ({coordinator.config_entry.data["zone"]})"
         )

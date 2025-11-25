@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from .const import DOMAIN
+from .const import DOMAIN, FRIENDLY_NAME
 
 from homeassistant.components.calendar import (
     CalendarEntity,
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 ENTITY_DESCRIPTIONS = (
     CalendarEntityDescription(
         key="vacances_fr",
-        name="Calendar",
+        name=FRIENDLY_NAME
     ),
 )
 
@@ -61,7 +61,6 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
         self._event: CalendarEvent | None = None
         self.entity_description = entity_description
         self.entity_id = f"{Platform.CALENDAR}.{DOMAIN}_{slugify(coordinator.config_entry.data["zone"])}"
-        self.icon = "mdi:umbrella-beach"
 
     @property
     def event(self) -> CalendarEvent | None:
