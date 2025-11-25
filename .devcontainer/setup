@@ -5,4 +5,19 @@ set -e
 cd "$(dirname "$0")/.."
 python3 -m pip install --requirement ./.devcontainer/requirements.txt
 
-CUSTOM_INTEGRATION_ROOT=${PWD} cookiecutter gh:lalexdotcom/ha-custom-integration-template --checkout=`jq -j '.template' ./.devcontainer/config.json`
+CREATE_TEMPLATE=false
+
+while true; do
+    read -p "Do you wish to setup the project template? [Y/n]" yn
+    case $yn in
+        [Yy]* ) CREATE_TEMPLATE=true; break;;
+        [Nn]* ) exit;;
+        * ) CREATE_TEMPLATE=true;;
+    esac
+done
+
+if [ "$CREATE_TEMPLATE" = true ] ; then
+    echo 'Start template prompt'
+    CUSTOM_INTEGRATION_ROOT=${PWD} cookiecutter gh:lalexdotcom/ha-custom-integration-template --checkout=`jq -j '.template' ./.devcontainer/config.json`
+fi
+
