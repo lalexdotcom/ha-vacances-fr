@@ -1,0 +1,19 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "description": "Choisissez la zone",
+                "data": {
+                    "zone": "Zone"
+                }
+            }
+        },
+        "error": {
+            "connection": "Impossible de se connecter au serveur.",
+            "unknown": "Erreur inconnue."
+        },
+        "abort": {
+            "already_configured": "Cette zone est déjà configurée."
+        }
+    }
+}

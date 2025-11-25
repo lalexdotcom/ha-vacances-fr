@@ -12,7 +12,7 @@ while true; do
     case $yn in
         [Yy]* ) CREATE_TEMPLATE=true; break;;
         [Nn]* ) exit;;
-        * ) CREATE_TEMPLATE=true;;
+        * ) CREATE_TEMPLATE=true; break;;
     esac
 done
 

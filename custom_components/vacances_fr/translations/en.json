@@ -1,0 +1,19 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "description": "Choose your vacation zone",
+                "data": {
+                    "zone": "Zone"
+                }
+            }
+        },
+        "error": {
+            "connection": "Unable to connect to the server.",
+            "unknown": "Unknown error occurred."
+        },
+        "abort": {
+            "already_configured": "This entry is already configured."
+        }
+    }
+}

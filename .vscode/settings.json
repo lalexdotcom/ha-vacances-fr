@@ -1,0 +1,5 @@
+{
+    "python.analysis.include": [
+        "/home/vscode/.local/lib/python3.13/site-packages"
+    ]
+}

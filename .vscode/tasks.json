@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Home assistant",
+            "type": "shell",
+            "command": "./scripts/develop",
+        },
+        {
+            "label": "Lint",
+            "type": "shell",
+            "command": "./scripts/lint",
+        }
+    ]
+}
