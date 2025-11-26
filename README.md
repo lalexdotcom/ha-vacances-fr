@@ -88,7 +88,7 @@ Avant de créer un nouveau ticket de bug:
 1. Verifiez le nombre de devices sur la page [System Health page](https://my.home-assistant.io/redirect/system_health)
 2. Vérifiez les warning et errors sur la page [Logs page](https://my.home-assistant.io/redirect/logs/)
 3. Vérifier les **debug logs** sur la page [Debug page](#debug-page) (doit être activé dans les réglages de l'intégration)
-4. Vérifier les [tickets **ouverts et fermés**] (https://github.com/lalexdotcom/ha-vacances-fr/issues?q=is%3Aissue)
+4. Vérifier les [tickets **ouverts et fermés**](https://github.com/lalexdotcom/ha-vacances-fr/issues?q=is%3Aissue)
 5. Partager les [diagnostics de l'integration](https://www.home-assistant.io/integrations/diagnostics/) (à partir de la v2022.2):
 
 - Tous les appareils: Paramètres > Appareils et services > [Intégrations](https://my.home-assistant.io/redirect/integrations/) > **Vacances Scolaires FR** > [[...]] > Télécharger les diagnostics
