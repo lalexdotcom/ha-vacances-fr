@@ -9,3 +9,4 @@ ATTRIBUTION = "Data provided by https: // data.education.gouv.fr/"
 
 CONF_ZONE = "zone"
 FRIENDLY_NAME = "Vacances Scolaires"
+FRIENDLY_PREFIX = "Vacances"

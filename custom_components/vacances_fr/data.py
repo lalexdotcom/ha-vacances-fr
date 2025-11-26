@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from datetime import date
+
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.loader import Integration
 
@@ -23,3 +25,25 @@ class VacancesFrData:
     client: VacancesFrApiClient
     coordinator: VacancesFrDataUpdateCoordinator
     integration: Integration
+
+
+@dataclass
+class VacancesFrPeriod:
+    """Data for the Vacances Scolaires FR integration."""
+
+    summary: str
+    start: date
+    end: date
+    uid: str
+    zone: str
+    year: str
+
+
+def get_period_extra_attributes(event: VacancesFrPeriod) -> dict[str, Any]:
+    """Get extra attributes for an event."""
+    return {
+        "start_date": event.start,
+        "end_date": event.end,
+        "zone": event.zone,
+        "annee_scolaire": event.year,
+    }

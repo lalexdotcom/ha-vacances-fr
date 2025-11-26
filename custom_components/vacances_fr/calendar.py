@@ -10,23 +10,20 @@ from homeassistant.components.calendar import (
     CalendarEvent,
 )
 from homeassistant.const import Platform
+from homeassistant.core import callback
 from homeassistant.util import dt, slugify
 
 from .const import DOMAIN, FRIENDLY_NAME
 from .entity import VacancesFrEntity
 
 if TYPE_CHECKING:
-    from datetime import date, datetime
+    from datetime import datetime
 
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
     from .coordinator import VacancesFrDataUpdateCoordinator
     from .data import VacancesFrConfigEntry
-
-ENTITY_DESCRIPTIONS = (
-    CalendarEntityDescription(key="vacances_fr", name=FRIENDLY_NAME),
-)
 
 
 async def async_setup_entry(
@@ -36,16 +33,21 @@ async def async_setup_entry(
 ) -> None:
     """Set up the binary_sensor platform."""
     async_add_entities(
-        VacancesFrCalendar(
-            coordinator=entry.runtime_data.coordinator,
-            entity_description=entity_description,
-        )
-        for entity_description in ENTITY_DESCRIPTIONS
+        [
+            VacancesFrCalendar(
+                coordinator=entry.runtime_data.coordinator,
+                entity_description=CalendarEntityDescription(
+                    key="vacances_fr", name=FRIENDLY_NAME
+                ),
+            )
+        ]
     )
 
 
 class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
     """vacances_fr binary_sensor class."""
+
+    _event: CalendarEvent | None = None
 
     def __init__(
         self,
@@ -54,41 +56,32 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
     ) -> None:
         """Initialize the binary_sensor class."""
         super().__init__(coordinator)
-        zone = self.coordinator.config_entry.data["zone"]
-        self._event: CalendarEvent | None = None
         self.entity_description = entity_description
-        self.entity_id = f"{Platform.CALENDAR}.{DOMAIN}_{slugify(zone)}"
+        self.entity_id = f"{Platform.CALENDAR}.{DOMAIN}_{
+            slugify(self.coordinator.config_entry.data['zone'])
+        }"
 
     @property
     def event(self) -> CalendarEvent | None:
         """Return the next upcoming event."""
         return self._event
 
-    async def async_update(self) -> None:
+    @callback
+    def _handle_coordinator_update(self) -> None:
         """Update the entity."""
-        zone = self.coordinator.config_entry.data["zone"]
+        next_event = self.coordinator.get_date_next_event(dt.now().date())
 
-        def next_event() -> CalendarEvent | None:
-            now = dt.now().date()
-            events = (
-                event
-                for event in (
-                    self.coordinator.data["holidays"]
-                    if self.coordinator.data is not None
-                    else []
-                )
-                if event["end"] >= now
+        self._event = (
+            CalendarEvent(
+                start=next_event.start,
+                end=next_event.start,
+                summary=f"{next_event.summary} - {next_event.zone}",
+                uid=next_event.uid,
             )
-            if event := next(events, None):
-                return CalendarEvent(
-                    start=event["start"],
-                    end=event["end"],
-                    summary=f"{event['summary']} - {zone}",
-                    uid=event["uid"],
-                )
-            return None
-
-        self._event = await self.hass.async_add_executor_job(next_event)
+            if next_event is not None
+            else None
+        )
+        self.async_write_ha_state()
 
     async def async_get_events(
         self,
@@ -97,21 +90,14 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
         end_date: datetime,
     ) -> list[CalendarEvent]:
         """Get events in a specific date range."""
-        zone = self.coordinator.config_entry.data["zone"]
-        events: list[CalendarEvent] = []
-        for event in self.coordinator.data["holidays"]:
-            event_start: date = event["start"]
-            event_end: date = event["end"]
-
-            if event_end >= start_date.date() and event_start <= end_date.date():
-                summary = f"{event['summary']} - {zone}"
-                events.append(
-                    CalendarEvent(
-                        summary=summary,
-                        start=event_start,
-                        end=event_end,
-                        uid=event["uid"],
-                    )
-                )
-
-        return events
+        return [
+            CalendarEvent(
+                summary=f"{event.summary} - {event.zone}",
+                start=event.start,
+                end=event.end,
+                uid=event.uid,
+            )
+            for event in self.coordinator.get_events_between(
+                start_date.date(), end_date.date()
+            )
+        ]

@@ -9,10 +9,6 @@ from typing import Any
 
 import aiohttp
 import async_timeout
-from homeassistant.util import slugify
-from homeassistant.util.dt import parse_datetime
-
-from .const import LOGGER
 
 
 class VacancesFrApiClientError(Exception):
@@ -48,14 +44,10 @@ class VacancesFrApiClient:
             url="https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-calendrier-scolaire/records?group_by=zones&order_by=zones&limit=100",
         )
 
-        zones = sorted(
+        return sorted(
             [x["zones"] for x in zones_result["results"]],
             key=lambda s: "1" if s.startswith("Zone") else "2",
         )
-
-        LOGGER.debug("Got zones %s", zones)
-
-        return zones
 
     async def async_get_events(self, zone: str) -> Any:
         """Get data from the API."""
@@ -77,23 +69,7 @@ class VacancesFrApiClient:
             url=url,
         )
 
-        return {
-            "holidays": [
-                {
-                    "summary": period["description"],
-                    "start": parse_datetime(
-                        period["start_date"], raise_on_error=True
-                    ).date(),
-                    "end": parse_datetime(
-                        period["end_date"], raise_on_error=True
-                    ).date(),
-                    "uid": f"{zone}-{slugify(period['description'])}-{
-                        period['annee_scolaire']
-                    }",
-                }
-                for period in events_result["results"]
-            ]
-        }
+        return events_result["results"]
 
     async def _api_wrapper(
         self,
