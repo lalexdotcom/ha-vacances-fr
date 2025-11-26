@@ -1,5 +1,8 @@
 {
     "python.analysis.include": [
         "/home/vscode/.local/lib/python3.13/site-packages"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    }
 }
