@@ -25,5 +25,5 @@ class VacancesFrEntity(CoordinatorEntity[VacancesFrDataUpdateCoordinator]):
                     coordinator.config_entry.entry_id,
                 ),
             },
-            name=f"{FRIENDLY_NAME} ({coordinator.config_entry.data["zone"]})"
+            name=f"{FRIENDLY_NAME} ({coordinator.config_entry.data['zone']})",
         )

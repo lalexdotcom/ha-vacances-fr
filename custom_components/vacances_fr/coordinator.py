@@ -25,7 +25,9 @@ class VacancesFrDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> Any:
         """Update data via library."""
         try:
-            return await self.config_entry.runtime_data.client.async_get_events(self.config_entry.data["zone"])
+            return await self.config_entry.runtime_data.client.async_get_events(
+                self.config_entry.data["zone"]
+            )
         except VacancesFrApiClientAuthenticationError as exception:
             raise ConfigEntryAuthFailed(exception) from exception
         except VacancesFrApiClientError as exception:

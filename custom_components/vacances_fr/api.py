@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 import socket
+import urllib.parse
+from datetime import datetime
 from typing import Any
 
 import aiohttp
 import async_timeout
-import urllib.parse
-
 from homeassistant.util import slugify
 from homeassistant.util.dt import parse_datetime
 
@@ -60,10 +59,18 @@ class VacancesFrApiClient:
 
     async def async_get_events(self, zone: str) -> Any:
         """Get data from the API."""
-
-        today = datetime.now().date()
-        url = f"https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-calendrier-scolaire/records?limit=100&refine={urllib.parse.quote(f'zones:"{zone}"')}&where={urllib.parse.quote(f"end_date >= date'{today}' and end_date > start_date")}&timezone={urllib.parse.quote(
-            'Europe/Paris')}&refine={urllib.parse.quote(f'population:"-"')}&refine={urllib.parse.quote(f'population:"Élèves"')}&order_by={urllib.parse.quote('start_date,location')}&group_by={urllib.parse.quote('start_date,end_date,description,zones,annee_scolaire')}"
+        today = datetime.now().date()  # noqa: DTZ005
+        url = f"https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-calendrier-scolaire/records?limit=100&refine={
+            urllib.parse.quote(f'zones:"{zone}"')
+        }&where={
+            urllib.parse.quote(f"end_date >= date'{today}' and end_date > start_date")
+        }&timezone={urllib.parse.quote('Europe/Paris')}&refine={
+            urllib.parse.quote('population:"-"')
+        }&refine={urllib.parse.quote('population:"Élèves"')}&order_by={
+            urllib.parse.quote('start_date,location')
+        }&group_by={
+            urllib.parse.quote('start_date,end_date,description,zones,annee_scolaire')
+        }"
 
         events_result = await self._api_wrapper(
             method="get",
@@ -74,9 +81,15 @@ class VacancesFrApiClient:
             "holidays": [
                 {
                     "summary": period["description"],
-                    "start": parse_datetime(period["start_date"], raise_on_error=True).date(),
-                    "end": parse_datetime(period["end_date"], raise_on_error=True).date(),
-                    "uid": f"{zone}-{slugify(period['description'])}-{period['annee_scolaire']}",
+                    "start": parse_datetime(
+                        period["start_date"], raise_on_error=True
+                    ).date(),
+                    "end": parse_datetime(
+                        period["end_date"], raise_on_error=True
+                    ).date(),
+                    "uid": f"{zone}-{slugify(period['description'])}-{
+                        period['annee_scolaire']
+                    }",
                 }
                 for period in events_result["results"]
             ]

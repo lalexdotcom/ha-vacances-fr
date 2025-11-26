@@ -2,23 +2,22 @@
 
 from __future__ import annotations
 
-from datetime import datetime, date
 from typing import TYPE_CHECKING
-
-from .const import DOMAIN, FRIENDLY_NAME
 
 from homeassistant.components.calendar import (
     CalendarEntity,
     CalendarEntityDescription,
     CalendarEvent,
 )
-
 from homeassistant.const import Platform
 from homeassistant.util import dt, slugify
 
+from .const import DOMAIN, FRIENDLY_NAME
 from .entity import VacancesFrEntity
 
 if TYPE_CHECKING:
+    from datetime import date, datetime
+
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -26,10 +25,7 @@ if TYPE_CHECKING:
     from .data import VacancesFrConfigEntry
 
 ENTITY_DESCRIPTIONS = (
-    CalendarEntityDescription(
-        key="vacances_fr",
-        name=FRIENDLY_NAME
-    ),
+    CalendarEntityDescription(key="vacances_fr", name=FRIENDLY_NAME),
 )
 
 
@@ -58,9 +54,10 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
     ) -> None:
         """Initialize the binary_sensor class."""
         super().__init__(coordinator)
+        zone = self.coordinator.config_entry.data["zone"]
         self._event: CalendarEvent | None = None
         self.entity_description = entity_description
-        self.entity_id = f"{Platform.CALENDAR}.{DOMAIN}_{slugify(coordinator.config_entry.data["zone"])}"
+        self.entity_id = f"{Platform.CALENDAR}.{DOMAIN}_{slugify(zone)}"
 
     @property
     def event(self) -> CalendarEvent | None:
@@ -69,6 +66,7 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
 
     async def async_update(self) -> None:
         """Update the entity."""
+        zone = self.coordinator.config_entry.data["zone"]
 
         def next_event() -> CalendarEvent | None:
             now = dt.now().date()
@@ -85,7 +83,7 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
                 return CalendarEvent(
                     start=event["start"],
                     end=event["end"],
-                    summary=f"{event['summary']} - {self.coordinator.config_entry.data["zone"]}",
+                    summary=f"{event['summary']} - {zone}",
                     uid=event["uid"],
                 )
             return None
@@ -93,18 +91,23 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
         self._event = await self.hass.async_add_executor_job(next_event)
 
     async def async_get_events(
-        self, hass: HomeAssistant, start_date: datetime, end_date: datetime
+        self,
+        hass: HomeAssistant,  # noqa: ARG002
+        start_date: datetime,
+        end_date: datetime,
     ) -> list[CalendarEvent]:
         """Get events in a specific date range."""
+        zone = self.coordinator.config_entry.data["zone"]
         events: list[CalendarEvent] = []
         for event in self.coordinator.data["holidays"]:
             event_start: date = event["start"]
             event_end: date = event["end"]
 
             if event_end >= start_date.date() and event_start <= end_date.date():
+                summary = f"{event['summary']} - {zone}"
                 events.append(
                     CalendarEvent(
-                        summary=f"{event['summary']} - {self.coordinator.config_entry.data["zone"]}",
+                        summary=summary,
                         start=event_start,
                         end=event_end,
                         uid=event["uid"],

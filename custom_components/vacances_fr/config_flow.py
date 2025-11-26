@@ -2,21 +2,16 @@
 
 from __future__ import annotations
 
-from click.core import V
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.helpers import selector
-from homeassistant.helpers.aiohttp_client import async_create_clientsession, async_get_clientsession
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from slugify import slugify
 
 from .api import (
     VacancesFrApiClient,
-    VacancesFrApiClientAuthenticationError,
-    VacancesFrApiClientCommunicationError,
-    VacancesFrApiClientError,
 )
-from .const import DOMAIN, CONF_ZONE
+from .const import CONF_ZONE, DOMAIN
 
 
 class VacancesFrFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
@@ -31,28 +26,21 @@ class VacancesFrFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle a flow initialized by the user."""
         _errors = {}
         if user_input is not None:
-            await self.async_set_unique_id(
-                unique_id=slugify(user_input[CONF_ZONE])
-            )
+            await self.async_set_unique_id(unique_id=slugify(user_input[CONF_ZONE]))
             self._abort_if_unique_id_configured()
             return self.async_create_entry(
                 title=user_input[CONF_ZONE],
                 data=user_input,
             )
 
-        client = VacancesFrApiClient(
-            session=async_get_clientsession(self.hass))
+        client = VacancesFrApiClient(session=async_get_clientsession(self.hass))
         zones = await client.async_get_zones()
 
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
                 {
-                    vol.Required("zone"): selector.SelectSelector(
-                        {
-                            "options": zones
-                        }
-                    ),
+                    vol.Required("zone"): selector.SelectSelector({"options": zones}),
                 }
             ),
             errors=_errors,
