@@ -9,12 +9,11 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import slugify
 from homeassistant.util.dt import parse_datetime
 
-from .const import LOGGER
-
 from .api import (
     VacancesFrApiClientAuthenticationError,
     VacancesFrApiClientError,
 )
+from .const import LOGGER
 from .data import VacancesFrPeriod
 
 if TYPE_CHECKING:
