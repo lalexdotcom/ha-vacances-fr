@@ -45,5 +45,5 @@ def get_period_extra_attributes(event: VacancesFrPeriod) -> dict[str, Any]:
         "start_date": event.start,
         "end_date": event.end,
         "zone": event.zone,
-        "annee_scolaire": event.year,
+        "année_scolaire": event.year,
     }

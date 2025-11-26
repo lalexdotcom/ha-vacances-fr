@@ -49,7 +49,7 @@ class VacancesFrDataUpdateCoordinator(DataUpdateCoordinator[list[VacancesFrPerio
                         uid=f"{zone}-{slugify(period['description'])}-{
                             period['annee_scolaire']
                         }",
-                        year=period["end_date"],
+                        year=period["annee_scolaire"],
                         zone=zone,
                     )
                     for period in api_events
