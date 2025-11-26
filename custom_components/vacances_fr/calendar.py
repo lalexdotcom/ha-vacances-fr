@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, date
 from typing import TYPE_CHECKING
 
 from .const import DOMAIN, FRIENDLY_NAME
@@ -71,7 +71,7 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
         """Update the entity."""
 
         def next_event() -> CalendarEvent | None:
-            now = dt.now()
+            now = dt.now().date()
             events = (
                 event
                 for event in (
@@ -98,10 +98,10 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
         """Get events in a specific date range."""
         events: list[CalendarEvent] = []
         for event in self.coordinator.data["holidays"]:
-            event_start: datetime = event["start"]
-            event_end: datetime = event["end"]
+            event_start: date = event["start"]
+            event_end: date = event["end"]
 
-            if event_end >= start_date and event_start <= end_date:
+            if event_end >= start_date.date() and event_start <= end_date.date():
                 events.append(
                     CalendarEvent(
                         summary=f"{event['summary']} - {self.coordinator.config_entry.data["zone"]}",

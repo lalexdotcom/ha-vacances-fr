@@ -74,8 +74,8 @@ class VacancesFrApiClient:
             "holidays": [
                 {
                     "summary": period["description"],
-                    "start": parse_datetime(period["start_date"]),
-                    "end": parse_datetime(period["end_date"]),
+                    "start": parse_datetime(period["start_date"], raise_on_error=True).date(),
+                    "end": parse_datetime(period["end_date"], raise_on_error=True).date(),
                     "uid": f"{zone}-{slugify(period['description'])}-{period['annee_scolaire']}",
                 }
                 for period in events_result["results"]
