@@ -74,7 +74,7 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
         self._event = (
             CalendarEvent(
                 start=next_event.start,
-                end=next_event.start,
+                end=next_event.end,
                 summary=f"{next_event.summary} - {next_event.zone}",
                 uid=next_event.uid,
             )
