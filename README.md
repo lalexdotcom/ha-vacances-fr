@@ -11,7 +11,7 @@
         <ul>
             <li>
                 <u>Using HACS:</u><br />
-                In the HACS panel, go to integrations and click the big orange '+' button. 
+                In the HACS panel, go to integrations and click the big orange '+' button.
                 Search for 'Vacances Scolaires FR' and click 'Install this repository in HACS'.
             </li>
             <li>
@@ -24,7 +24,19 @@
     </ol>
 </details>
 
-## Updating
+## Configuration
+- on choisit une zone dans la liste déroulante
+- ... et c'est tout! 😋
+
+## Fonctionnalités
+- un `calendar` avec toutes les vacances à venir pour la zone. Il sert aussi pour vérifier si on est en vacances, parce que le calendrier a un state `ON` si un évènement est en cours et un state `OFF` sinon.
+- un `binary_sensor` qui dit si la zone sera en vacances demain
+- un `sensor` "Vacances en cours" avec le nom de la période de vacances, et des attributs supplémentaire. Sa valeur est "Unknown" si pas de vacances en cours
+- un `sensor` "Vacances à venir" comme le précédent mais pour les prochaines vacances, n'incluant pas les vacances en cours si c'est le cas (en gros, si vous êtes en pleines vacances de Noel, ca indiquera Vacances d'hiver)
+
+L'intégration se met à jour tous les 120 jours: vu que l'éducation nationale fournit les plannings jusqu'à 2027, ca devrait pas évoluer trop souvent 😇## Updating
+
+## Mise à jour
 
 <details>
     <summary>Click to show updating instructions</summary>
