@@ -20,7 +20,7 @@ type VacancesFrConfigEntry = ConfigEntry[VacancesFrData]
 
 @dataclass
 class VacancesFrData:
-    """Data for the Vacances Scolaires FR integration."""
+    """Data for the Vacances Scolaires France integration."""
 
     client: VacancesFrApiClient
     coordinator: VacancesFrDataUpdateCoordinator
@@ -29,7 +29,7 @@ class VacancesFrData:
 
 @dataclass
 class VacancesFrPeriod:
-    """Data for the Vacances Scolaires FR integration."""
+    """Data for the Vacances Scolaires France integration."""
 
     summary: str
     start: date

@@ -1,5 +1,6 @@
 {
-    "name": "Vacances Scolaires FR",
+    "name": "Vacances Scolaires France",
     "homeassistant": "2025.2.4",
-    "hacs": "2.0.5"
+    "hacs": "2.0.5",
+    "country": "fr"
 }

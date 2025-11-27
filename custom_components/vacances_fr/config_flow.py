@@ -1,4 +1,4 @@
-"""Adds config flow for Vacances Scolaires FR."""
+"""Adds config flow for Vacances Scolaires France."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from .const import CONF_ZONE, DOMAIN
 
 
 class VacancesFrFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
-    """Config flow for Vacances Scolaires FR."""
+    """Config flow for Vacances Scolaires France."""
 
     VERSION = 1
 
