@@ -11,7 +11,7 @@
         <ul>
             <li>
                 <u>Avec HACS</u><br />
-                Dans le panel HACS, aller sur les inegrations et cliquer sur le gros bouton '+' orange.
+                Dans le panel HACS, aller sur les intégrations et cliquer sur le gros bouton '+' orange.
                 Chercher 'Vacances Scolaires FR' and cliquer sur 'Install this repository in HACS'.
             </li>
             <li>
