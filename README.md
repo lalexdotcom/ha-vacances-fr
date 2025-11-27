@@ -5,7 +5,7 @@
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=lalexdotcom&repository=ha-vacances-fr&category=integration)
 
 <details>
-    <summary>Cliquez ici pour afficher les instructinos détaillées</summary>
+    <summary>Cliquez ici pour afficher les instructions détaillées</summary>
     <ol>
         <li>Installation</li>
         <ul>
