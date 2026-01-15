@@ -81,7 +81,7 @@ class VacancesFrCalendar(VacancesFrEntity, CalendarEntity):
             if next_event is not None
             else None
         )
-        self.async_write_ha_state()
+        self.schedule_update_ha_state()
 
     async def async_get_events(
         self,

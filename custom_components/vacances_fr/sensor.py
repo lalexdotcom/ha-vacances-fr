@@ -81,7 +81,7 @@ class CurrentVacancesFrSensor(VacancesFrEntity, SensorEntity):
         else:
             self._attr_native_value = None
 
-        self.async_write_ha_state()
+        self.schedule_update_ha_state()
 
 
 class NextVacancesFrSensor(VacancesFrEntity, SensorEntity):
@@ -126,4 +126,4 @@ class NextVacancesFrSensor(VacancesFrEntity, SensorEntity):
         else:
             self._attr_native_value = None
 
-        self.async_write_ha_state()
+        self.schedule_update_ha_state()

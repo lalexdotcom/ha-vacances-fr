@@ -7,6 +7,7 @@ https://github.com/ludeeus/vacances_fr
 
 from __future__ import annotations
 
+from datetime import timedelta
 from typing import TYPE_CHECKING
 
 from homeassistant.const import Platform
@@ -33,9 +34,7 @@ async def async_setup_entry(
 ) -> bool:
     """Set up this integration using UI."""
     coordinator = VacancesFrDataUpdateCoordinator(
-        hass=hass,
-        logger=LOGGER,
-        name=DOMAIN,
+        hass=hass, logger=LOGGER, name=DOMAIN, update_interval=timedelta(days=120)
     )
     entry.runtime_data = VacancesFrData(
         client=VacancesFrApiClient(
